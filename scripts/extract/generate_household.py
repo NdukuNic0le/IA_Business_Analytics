@@ -232,12 +232,12 @@ print("Generating 200,000 household records...")
 households_df = generate_households(200000)
 
 # Save to CSV
-households_df.to_csv('/home/claude/Org X_households_200k.csv', index=False)
+households_df.to_csv('/home/project/Org X_households_200k.csv', index=False)
 print(f"Saved {len(households_df)} records to Org X_households_200k.csv")
 
 # Generate and save summary statistics
 stats = generate_summary_statistics(households_df)
-with open('/home/claude/Org X_data_summary.json', 'w') as f:
+with open('/home/project/Org X_data_summary.json', 'w') as f:
     json.dump(stats, f, indent=2, default=str)
 print("\nSummary statistics saved to Org X_data_summary.json")
 
