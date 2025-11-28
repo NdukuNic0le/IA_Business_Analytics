@@ -206,12 +206,6 @@ Clear additionality demonstrated: treatment group shows 30% fuel cost reduction 
 - [ ] Predictive churn model
 - [ ] Multi-year forecasting
 
-## Contact
-
-**Nicole Nduku Kiilu**  
-Data Scientist | AWS ML Specialty Certified  
-Email: ndukunicole@gmail.com  
-LinkedIn: [linkedin.com/in/nicolekiilu](https://linkedin.com/in/nicolekiilu)
 
 ## License
 
@@ -219,6 +213,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- Kiota Social Innovation Centre for project data and requirements
 - WHO Global Health Observatory for health impact coefficients
 - EPA for cookstove emission standards
