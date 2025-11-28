@@ -1,6 +1,6 @@
 # Data Dictionary
 
-This document defines all fields in the Kiota SIC Impact Measurement & ROI Analytics System, including data types, valid ranges, business meanings, and usage in calculations.
+This document defines all fields in the Org X SIC Impact Measurement & ROI Analytics System, including data types, valid ranges, business meanings, and usage in calculations.
 
 ## Table of Contents
 
