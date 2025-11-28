@@ -1,5 +1,5 @@
 """
-Investment Optimization Model for Kiota SIC
+Investment Optimization Model Org X
 ============================================
 Optimizes resource allocation across 14 Kenya counties to maximize impact
 under budget constraints using linear programming.
