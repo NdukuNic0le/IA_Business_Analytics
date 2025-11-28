@@ -84,7 +84,7 @@ for i in range(1, 4):
 products_df = pd.DataFrame(products_data)
 
 # Save to CSV
-products_df.to_csv('/home/claude/product_performance_metrics.csv', index=False)
+products_df.to_csv('/home/project/product_performance_metrics.csv', index=False)
 print(f"Generated {len(products_df)} product specifications")
 print("\n=== PRODUCT SUMMARY ===")
 print(products_df.groupby('product_type').agg({
@@ -100,7 +100,7 @@ transactions = []
 transaction_id = 1000000
 
 # Load household data to link transactions
-households_df = pd.read_csv('/home/claude/kiota_households_200k.csv')
+households_df = pd.read_csv('/home/project/Org X_households_200k.csv')
 adopted_households = households_df[households_df['product_type'] != 'none']
 
 for idx, household in adopted_households.iterrows():
@@ -164,7 +164,7 @@ for idx, household in adopted_households.iterrows():
         transaction_id += 1
 
 transactions_df = pd.DataFrame(transactions)
-transactions_df.to_csv('/home/claude/financial_transactions.csv', index=False)
+transactions_df.to_csv('/home/project/financial_transactions.csv', index=False)
 
 print(f"Generated {len(transactions_df)} transactions")
 print("\n=== TRANSACTION SUMMARY ===")
