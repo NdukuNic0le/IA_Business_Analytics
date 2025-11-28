@@ -1,6 +1,6 @@
 # Salesforce Integration Guide
 
-This document provides a step-by-step guide for integrating Kiota SIC's Salesforce CRM with the Impact Analytics system in a production environment.
+This document provides a step-by-step guide for integrating Org X SIC's Salesforce CRM with the Impact Analytics system in a production environment.
 
 ## Table of Contents
 
@@ -47,9 +47,9 @@ flowchart LR
 2. Click **New Connected App**
 3. Configure:
    ```
-   Connected App Name: Kiota Power BI Integration
-   API Name: Kiota_Power_BI_Integration
-   Contact Email: admin@kiotasic.org
+   Connected App Name: Org X Power BI Integration
+   API Name: Org X_Power_BI_Integration
+   Contact Email: admin@Org Xsic.org
    Enable OAuth Settings: ✓
    Callback URL: https://oauth.powerbi.com/views/oauthredirect.html
    Selected OAuth Scopes:
@@ -357,14 +357,14 @@ def upsert_households(df):
     engine = get_postgres_engine()
     
     # For incremental loads, use temporary table and merge
-    df.to_sql('staging_households', engine, schema='kiota', 
+    df.to_sql('staging_households', engine, schema='Org X', 
               if_exists='replace', index=False)
     
     with engine.connect() as conn:
         conn.execute("""
-            INSERT INTO kiota.dim_household (household_id, county, ...)
+            INSERT INTO Org X.dim_household (household_id, county, ...)
             SELECT household_id, county, ...
-            FROM kiota.staging_households
+            FROM Org X.staging_households
             ON CONFLICT (household_id) 
             DO UPDATE SET
                 county = EXCLUDED.county,
@@ -428,7 +428,7 @@ if __name__ == "__main__":
 ```bash
 # Add to crontab -e
 # Run daily at 2:00 AM
-0 2 * * * cd /path/to/project && /path/to/venv/bin/python run_salesforce_etl.py >> /var/log/kiota_etl.log 2>&1
+0 2 * * * cd /path/to/project && /path/to/venv/bin/python run_salesforce_etl.py >> /var/log/Org X_etl.log 2>&1
 ```
 
 ---
@@ -516,13 +516,13 @@ Account Custom Fields:
 
 ```bash
 # .env file (never commit to git)
-SF_USERNAME=integration@kiotasic.org
+SF_USERNAME=integration@Org Xsic.org
 SF_PASSWORD=securepassword
 SF_SECURITY_TOKEN=abcdef123456
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=kiota_sic_impact
-DB_USER=kiota_etl
+DB_NAME=Org X_sic_impact
+DB_USER=Org X_etl
 DB_PASSWORD=dbpassword
 ```
 
@@ -531,7 +531,7 @@ DB_PASSWORD=dbpassword
 Create a permission set for the integration user:
 
 ```yaml
-Permission Set: Kiota Analytics Integration
+Permission Set: Org X Analytics Integration
   Object Permissions:
     Account: Read
     Contact: Read
