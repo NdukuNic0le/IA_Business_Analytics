@@ -49,7 +49,7 @@ for county in counties:
             route_id += 1
 
 ebike_df = pd.DataFrame(ebike_routes)
-ebike_df.to_csv('/home/claude/ebike_logistics_data.csv', index=False)
+ebike_df.to_csv('/home/project/ebike_logistics_data.csv', index=False)
 print(f"Generated {len(ebike_df)} e-bike routes")
 
 # 2. CARBON CREDIT PRICES (Historical and Projected)
@@ -76,7 +76,7 @@ for i in range(36):  # 3 years of monthly data
     })
 
 carbon_df = pd.DataFrame(carbon_prices)
-carbon_df.to_csv('/home/claude/carbon_credit_prices.csv', index=False)
+carbon_df.to_csv('/home/project/carbon_credit_prices.csv', index=False)
 print(f"Generated {len(carbon_df)} months of carbon credit price data")
 
 # 3. DONOR SEGMENTATION MATRIX
@@ -146,7 +146,7 @@ donors = [
 ]
 
 # Save donor data as JSON for flexibility
-with open('/home/claude/donor_segmentation_matrix.json', 'w') as f:
+with open('/home/project/donor_segmentation_matrix.json', 'w') as f:
     json.dump(donors, f, indent=2)
 print(f"Generated {len(donors)} donor profiles")
 
@@ -163,7 +163,7 @@ health_coefficients = {
     'healthcare_cost_savings_ksh_per_year': 5000
 }
 
-with open('/home/claude/health_impact_coefficients.json', 'w') as f:
+with open('/home/project/health_impact_coefficients.json', 'w') as f:
     json.dump(health_coefficients, f, indent=2)
 print("Generated health impact coefficients")
 
@@ -191,7 +191,7 @@ for source in sources:
     })
 
 quality_df = pd.DataFrame(data_quality)
-quality_df.to_csv('/home/claude/data_quality_metrics.csv', index=False)
+quality_df.to_csv('/home/project/data_quality_metrics.csv', index=False)
 print("Generated data quality metrics")
 
 # SUMMARY REPORT
