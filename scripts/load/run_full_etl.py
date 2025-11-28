@@ -23,7 +23,7 @@ def run_complete_pipeline():
     
     start_time = datetime.now()
     logging.info("="*50)
-    logging.info("STARTING KIOTA ETL PIPELINE")
+    logging.info("STARTING Org X ETL PIPELINE")
     logging.info("="*50)
     
     try:
