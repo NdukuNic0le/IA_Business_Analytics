@@ -1,5 +1,5 @@
 """
-Load Kiota data from CSV files to PostgreSQL database
+Load data from CSV files to PostgreSQL database
 """
 import pandas as pd
 import numpy as np
@@ -14,7 +14,7 @@ import json
 load_dotenv()
 
 
-class KiotaDataLoader:
+class Org XDataLoader:
     def __init__(self):
         """Initialize database connection"""
         self.connection_string = (
@@ -50,7 +50,7 @@ class KiotaDataLoader:
             })
         
         df_date = pd.DataFrame(date_data)
-        df_date.to_sql('dim_date', self.engine, schema='kiota', 
+        df_date.to_sql('dim_date', self.engine, schema='Org X', 
                       if_exists='append', index=False, method='multi')
         print(f"Loaded {len(df_date)} dates")
         
@@ -58,7 +58,7 @@ class KiotaDataLoader:
         """Load household dimension"""
         print("Loading household data...")
         
-        df = pd.read_csv('../../data/raw/kiota_households_200k.csv')
+        df = pd.read_csv('../../data/raw/Org X_households_200k.csv')
         
         # Select relevant columns for dim_household
         household_cols = [
@@ -73,7 +73,7 @@ class KiotaDataLoader:
         ]
         
         df_household = df[household_cols].copy()
-        df_household.to_sql('dim_household', self.engine, schema='kiota',
+        df_household.to_sql('dim_household', self.engine, schema='Org X',
                            if_exists='append', index=False, method='multi')
         print(f"Loaded {len(df_household)} households")
         
@@ -84,7 +84,7 @@ class KiotaDataLoader:
         print("Loading product data...")
         
         df = pd.read_csv('../../data/raw/product_performance_metrics.csv')
-        df.to_sql('dim_product', self.engine, schema='kiota',
+        df.to_sql('dim_product', self.engine, schema='Org X',
                  if_exists='append', index=False, method='multi')
         print(f"Loaded {len(df)} products")
         
@@ -125,7 +125,7 @@ class KiotaDataLoader:
         ]
         
         df_geo = pd.DataFrame(counties)
-        df_geo.to_sql('dim_geography', self.engine, schema='kiota',
+        df_geo.to_sql('dim_geography', self.engine, schema='Org X',
                      if_exists='append', index=False)
         print(f"Loaded {len(df_geo)} counties")
         
@@ -141,19 +141,19 @@ class KiotaDataLoader:
         with self.engine.connect() as conn:
             # Get household keys
             households = pd.read_sql(
-                "SELECT household_key, household_id FROM kiota.dim_household", 
+                "SELECT household_key, household_id FROM Org X.dim_household", 
                 conn
             )
             
             # Get product keys
             products = pd.read_sql(
-                "SELECT product_key, product_type FROM kiota.dim_product", 
+                "SELECT product_key, product_type FROM Org X.dim_product", 
                 conn
             )
             
             # Get geography keys
             geography = pd.read_sql(
-                "SELECT geography_key, county FROM kiota.dim_geography", 
+                "SELECT geography_key, county FROM Org X.dim_geography", 
                 conn
             )
         
@@ -187,14 +187,14 @@ class KiotaDataLoader:
         
         fact_data['actual_price_paid'] = 500  # KSH 500 = $5
         
-        fact_data.to_sql('fact_adoptions', self.engine, schema='kiota',
+        fact_data.to_sql('fact_adoptions', self.engine, schema='Org X',
                         if_exists='append', index=False, method='multi')
         print(f"Loaded {len(fact_data)} adoption records")
         
     def run_full_load(self):
         """Execute complete data loading process"""
         print("\n" + "="*50)
-        print("STARTING KIOTA DATA LOAD")
+        print("STARTING Org X DATA LOAD")
         print("="*50 + "\n")
         
         # Load dimensions first
@@ -211,5 +211,5 @@ class KiotaDataLoader:
         print("="*50)
         
 if __name__ == "__main__":
-    loader = KiotaDataLoader()
+    loader = Org XDataLoader()
     loader.run_full_load()
