@@ -206,9 +206,9 @@ def calculate_impact_per_household(counties, coefficients):
 # OPTIMIZATION MODEL
 # ============================================
 
-class KiotaOptimizer:
+class Org XOptimizer:
     """
-    Linear Programming optimizer for Kiota SIC resource allocation.
+    Linear Programming optimizer for Org X SIC resource allocation.
     
     Supports three objectives:
     1. Maximize lives saved
@@ -245,7 +245,7 @@ class KiotaOptimizer:
         county_names = self.counties['county'].tolist()
         
         # Create the model
-        self.model = LpProblem(f"Kiota_Allocation_{self.objective}", LpMaximize)
+        self.model = LpProblem(f"Org X_Allocation_{self.objective}", LpMaximize)
         
         # Decision variables: households to reach in each county
         self.households = {
@@ -395,7 +395,7 @@ def run_sensitivity_analysis(counties, budget_levels, objectives):
     
     for budget in budget_levels:
         for objective in objectives:
-            optimizer = KiotaOptimizer(counties, budget, objective)
+            optimizer = Org XOptimizer(counties, budget, objective)
             optimizer.solve()
             summary = optimizer.get_summary()
             results.append(summary)
@@ -412,11 +412,11 @@ def compare_equity_tradeoff(counties, budget):
     
     for objective in ['lives_saved', 'co2_avoided', 'households_reached']:
         # With equity constraint (standard)
-        opt_equity = KiotaOptimizer(counties, budget, objective)
+        opt_equity = Org XOptimizer(counties, budget, objective)
         opt_equity.solve()
         
         # Without equity constraint
-        opt_no_equity = KiotaOptimizer(counties, budget, objective)
+        opt_no_equity = Org XOptimizer(counties, budget, objective)
         opt_no_equity.min_allocation_pct = 0.0  # Remove equity constraint
         opt_no_equity.build_model()
         opt_no_equity.solve()
@@ -657,7 +657,7 @@ def create_recommendation_table(results_500k, results_1m):
 def main():
     """Run the complete optimization analysis."""
     print("="*70)
-    print("KIOTA SIC INVESTMENT OPTIMIZATION MODEL")
+    print("Org X SIC INVESTMENT OPTIMIZATION MODEL")
     print("="*70)
     print(f"Analysis Date: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print()
@@ -688,7 +688,7 @@ def main():
         all_results[budget] = {}
         
         for objective in objectives:
-            optimizer = KiotaOptimizer(counties, budget, objective)
+            optimizer = Org XOptimizer(counties, budget, objective)
             optimizer.solve(verbose=False)
             all_results[budget][objective] = optimizer
             
