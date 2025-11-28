@@ -1,13 +1,13 @@
 -- Drop schema if exists for fresh start
-DROP SCHEMA IF EXISTS kiota CASCADE;
-CREATE SCHEMA kiota;
+DROP SCHEMA IF EXISTS Org X CASCADE;
+CREATE SCHEMA Org X;
 
 -- ============================================
 -- DIMENSION TABLES
 -- ============================================
 
 -- Dimension: Household
-CREATE TABLE kiota.dim_household (
+CREATE TABLE Org X.dim_household (
     household_key SERIAL PRIMARY KEY,
     household_id VARCHAR(20) UNIQUE NOT NULL,
     county VARCHAR(50),
@@ -54,7 +54,7 @@ CREATE TABLE kiota.dim_household (
 );
 
 -- Dimension: Product
-CREATE TABLE kiota.dim_product (
+CREATE TABLE Org X.dim_product (
     product_key SERIAL PRIMARY KEY,
     product_id VARCHAR(10) UNIQUE NOT NULL,
     product_type VARCHAR(50),
@@ -72,7 +72,7 @@ CREATE TABLE kiota.dim_product (
 );
 
 -- Dimension: Date
-CREATE TABLE kiota.dim_date (
+CREATE TABLE Org X.dim_date (
     date_key INT PRIMARY KEY,
     full_date DATE UNIQUE NOT NULL,
     year INT,
@@ -89,7 +89,7 @@ CREATE TABLE kiota.dim_date (
 );
 
 -- Dimension: Geography (County details)
-CREATE TABLE kiota.dim_geography (
+CREATE TABLE Org X.dim_geography (
     geography_key SERIAL PRIMARY KEY,
     county VARCHAR(50) UNIQUE NOT NULL,
     region VARCHAR(50),
@@ -101,7 +101,7 @@ CREATE TABLE kiota.dim_geography (
 );
 
 -- Dimension: Donor
-CREATE TABLE kiota.dim_donor (
+CREATE TABLE Org X.dim_donor (
     donor_key SERIAL PRIMARY KEY,
     donor_id VARCHAR(10) UNIQUE NOT NULL,
     donor_name VARCHAR(100),
@@ -118,12 +118,12 @@ CREATE TABLE kiota.dim_donor (
 -- ============================================
 
 -- Fact: Adoptions
-CREATE TABLE kiota.fact_adoptions (
+CREATE TABLE Org X.fact_adoptions (
     adoption_key SERIAL PRIMARY KEY,
-    household_key INT REFERENCES kiota.dim_household(household_key),
-    product_key INT REFERENCES kiota.dim_product(product_key),
-    adoption_date_key INT REFERENCES kiota.dim_date(date_key),
-    geography_key INT REFERENCES kiota.dim_geography(geography_key),
+    household_key INT REFERENCES Org X.dim_household(household_key),
+    product_key INT REFERENCES Org X.dim_product(product_key),
+    adoption_date_key INT REFERENCES Org X.dim_date(date_key),
+    geography_key INT REFERENCES Org X.dim_geography(geography_key),
     
     -- Measures
     payment_method VARCHAR(50),
@@ -141,12 +141,12 @@ CREATE TABLE kiota.fact_adoptions (
 );
 
 -- Fact: Transactions
-CREATE TABLE kiota.fact_transactions (
+CREATE TABLE Org X.fact_transactions (
     transaction_key SERIAL PRIMARY KEY,
     transaction_id VARCHAR(20) UNIQUE NOT NULL,
-    household_key INT REFERENCES kiota.dim_household(household_key),
-    product_key INT REFERENCES kiota.dim_product(product_key),
-    transaction_date_key INT REFERENCES kiota.dim_date(date_key),
+    household_key INT REFERENCES Org X.dim_household(household_key),
+    product_key INT REFERENCES Org X.dim_product(product_key),
+    transaction_date_key INT REFERENCES Org X.dim_date(date_key),
     
     -- Measures
     amount_ksh DECIMAL(12,2),
@@ -158,12 +158,12 @@ CREATE TABLE kiota.fact_transactions (
 );
 
 -- Fact: Impact Metrics (Monthly aggregation)
-CREATE TABLE kiota.fact_impact_metrics (
+CREATE TABLE Org X.fact_impact_metrics (
     impact_key SERIAL PRIMARY KEY,
-    household_key INT REFERENCES kiota.dim_household(household_key),
-    product_key INT REFERENCES kiota.dim_product(product_key),
-    month_key INT REFERENCES kiota.dim_date(date_key),
-    geography_key INT REFERENCES kiota.dim_geography(geography_key),
+    household_key INT REFERENCES Org X.dim_household(household_key),
+    product_key INT REFERENCES Org X.dim_product(product_key),
+    month_key INT REFERENCES Org X.dim_date(date_key),
+    geography_key INT REFERENCES Org X.dim_geography(geography_key),
     
     -- Health impacts
     dalys_avoided DECIMAL(10,4),
@@ -188,10 +188,10 @@ CREATE TABLE kiota.fact_impact_metrics (
 );
 -- Added on 20th Nov directly to PostgreSQL - E-bike and Carbon Price Timeseries
 -- Fact: E-bike Logistics
-CREATE TABLE IF NOT EXISTS kiota.fact_ebike_logistics (
+CREATE TABLE IF NOT EXISTS Org X.fact_ebike_logistics (
     route_key SERIAL PRIMARY KEY,
     route_id VARCHAR(20) UNIQUE NOT NULL,
-    geography_key INT REFERENCES kiota.dim_geography(geography_key),
+    geography_key INT REFERENCES Org X.dim_geography(geography_key),
     
     distribution_center VARCHAR(100),
     route_name VARCHAR(100),
@@ -209,9 +209,9 @@ CREATE TABLE IF NOT EXISTS kiota.fact_ebike_logistics (
 );
 
 -- Fact: Carbon Credit Prices (time series data)
-CREATE TABLE IF NOT EXISTS kiota.fact_carbon_credits (
+CREATE TABLE IF NOT EXISTS Org X.fact_carbon_credits (
     carbon_key SERIAL PRIMARY KEY,
-    date_key INT REFERENCES kiota.dim_date(date_key),
+    date_key INT REFERENCES Org X.dim_date(date_key),
     
     price_per_ton_usd DECIMAL(10,2),
     market_type VARCHAR(50),
@@ -224,14 +224,14 @@ CREATE TABLE IF NOT EXISTS kiota.fact_carbon_credits (
 );
 
 -- Create indexes for performance
-CREATE INDEX idx_household_county ON kiota.dim_household(county);
-CREATE INDEX idx_household_control ON kiota.dim_household(control_group);
-CREATE INDEX idx_adoptions_date ON kiota.fact_adoptions(adoption_date_key);
-CREATE INDEX idx_transactions_date ON kiota.fact_transactions(transaction_date_key);
-CREATE INDEX idx_impact_month ON kiota.fact_impact_metrics(month_key);
+CREATE INDEX idx_household_county ON Org X.dim_household(county);
+CREATE INDEX idx_household_control ON Org X.dim_household(control_group);
+CREATE INDEX idx_adoptions_date ON Org X.fact_adoptions(adoption_date_key);
+CREATE INDEX idx_transactions_date ON Org X.fact_transactions(transaction_date_key);
+CREATE INDEX idx_impact_month ON Org X.fact_impact_metrics(month_key);
 
 -- Create views for common queries
-CREATE OR REPLACE VIEW kiota.v_adoption_summary AS
+CREATE OR REPLACE VIEW Org X.v_adoption_summary AS
 SELECT 
     h.county,
     h.urban_rural,
@@ -239,9 +239,9 @@ SELECT
     COUNT(*) as adoption_count,
     AVG(f.usage_intensity) as avg_usage_intensity,
     SUM(f.subsidy_amount) as total_subsidy
-FROM kiota.fact_adoptions f
-JOIN kiota.dim_household h ON f.household_key = h.household_key
-JOIN kiota.dim_product p ON f.product_key = p.product_key
+FROM Org X.fact_adoptions f
+JOIN Org X.dim_household h ON f.household_key = h.household_key
+JOIN Org X.dim_product p ON f.product_key = p.product_key
 GROUP BY h.county, h.urban_rural, p.product_type;
 
-COMMENT ON SCHEMA kiota IS 'Kiota SIC Impact Measurement Analytics Schema';
+COMMENT ON SCHEMA Org X IS 'Org X SIC Impact Measurement Analytics Schema';
