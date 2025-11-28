@@ -15,11 +15,11 @@ connection_string = (
 engine = create_engine(connection_string)
 
 queries = {
-    'Total Households': "SELECT COUNT(*) FROM kiota.dim_household",
-    'Control Group': "SELECT COUNT(*) FROM kiota.dim_household WHERE control_group = true",
-    'Products': "SELECT COUNT(*) FROM kiota.dim_product",
-    'Adoptions': "SELECT COUNT(*) FROM kiota.fact_adoptions",
-    'Counties': "SELECT COUNT(*) FROM kiota.dim_geography"
+    'Total Households': "SELECT COUNT(*) FROM Org X.dim_household",
+    'Control Group': "SELECT COUNT(*) FROM Org X.dim_household WHERE control_group = true",
+    'Products': "SELECT COUNT(*) FROM Org X.dim_product",
+    'Adoptions': "SELECT COUNT(*) FROM Org X.fact_adoptions",
+    'Counties': "SELECT COUNT(*) FROM Org X.dim_geography"
 }
 
 print("\n=== DATABASE VERIFICATION ===\n")
@@ -30,8 +30,8 @@ for name, query in queries.items():
 print("\n=== ADOPTION SUMMARY BY COUNTY ===\n")
 summary = pd.read_sql("""
     SELECT g.county, COUNT(*) as adoptions
-    FROM kiota.fact_adoptions f
-    JOIN kiota.dim_geography g ON f.geography_key = g.geography_key
+    FROM Org X.fact_adoptions f
+    JOIN Org X.dim_geography g ON f.geography_key = g.geography_key
     GROUP BY g.county
     ORDER BY adoptions DESC
     LIMIT 5
