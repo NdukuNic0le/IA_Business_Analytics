@@ -1,6 +1,6 @@
 # Impact Measurement & ROI Analytics System
 
-**Strategic Decision-Support for Kiota SIC Clean Energy Scale-Up**
+**Strategic Decision-Support for Org X SIC Clean Energy Scale-Up**
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-336791.svg)](https://postgresql.org)
@@ -9,22 +9,14 @@
 
 ## Project Overview
 
-This analytics system supports **Kiota Social Innovation Centre (SIC)** in measuring impact, optimizing resource allocation, and ensuring accountability for their clean energy deployment across Kenya. The system complements Kiota SIC's operational Salesforce platform by providing strategic decision-support capabilities.
+This analytics system supports **Org X** in measuring impact, optimizing resource allocation, and ensuring accountability for their clean energy deployment across Kenya. The system complements Org X's operational Salesforce platform by providing strategic decision-support capabilities.
 
-### Business Context
-
-Kiota SIC aims to deploy **975,000 clean cookstoves** and **100,000 solar lanterns** across 14 Kenya counties by 2030. This requires answering critical questions:
-
-- Where should the next $500K-$1M be invested to maximize impact?
-- How do we prove impact to donors and carbon credit verifiers?
-- Which counties are underperforming and require intervention?
-- What is our actual cost per life saved and cost per ton CO2 avoided?
 
 ### Solution
 
 A comprehensive analytics layer that transforms operational data into actionable insights through:
 
-- **7-page interactive Power BI dashboard** covering executive KPIs, impact analysis, financial performance, and scenario planning
+- **5-page interactive Power BI dashboard** covering executive KPIs, impact analysis, financial performance, and scenario planning
 - **Investment optimization model** using linear programming to allocate resources across 14 counties
 - **Carbon MRV documentation** ready for CCP verification and auditor review
 
@@ -51,7 +43,7 @@ A comprehensive analytics layer that transforms operational data into actionable
 ## Repository Structure
 
 ```
-kiota-sic-analytics/
+Org X-sic-analytics/
 ├── data/
 │   ├── raw/                          # Bronze layer (original data)
 │   └── processed/                    # Silver/Gold layers
@@ -64,7 +56,7 @@ kiota-sic-analytics/
 ├── models/
 │   └── investment_optimization_model.py  # Linear programming model
 ├── powerbi/
-│   └── Kiota_SIC_Dashboard.pbix      # Power BI report
+│   └── Org X_SIC_Dashboard.pbix      # Power BI report
 ├── docs/
 │   ├── ARCHITECTURE.md               # System architecture
 │   ├── DATA_DICTIONARY.md            # Field definitions
@@ -79,7 +71,7 @@ kiota-sic-analytics/
 
 ## Deliverables
 
-### 1. Power BI Dashboard (7 Pages)
+### 1. Power BI Dashboard (5 Pages)
 
 | Page | Purpose | Key Questions Answered |
 |------|---------|----------------------|
@@ -88,8 +80,6 @@ kiota-sic-analytics/
 | Financial Performance | Cost efficiency | What's our cost per DALY? |
 | Customer Analytics | Segmentation | Who's at risk of churning? |
 | Scenario Planning | What-if analysis | What if we change product mix? |
-| Economic Impact | Household savings | What's the ROI for beneficiaries? |
-| Data Quality | Monitoring | Is our data audit-ready? |
 
 ### 2. Investment Optimization Model
 
@@ -136,8 +126,8 @@ Linear programming model that determines optimal resource allocation across 14 c
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/kiota-sic-analytics.git
-cd kiota-sic-analytics
+git clone https://github.com/yourusername/Org X-sic-analytics.git
+cd Org X-sic-analytics
 
 # Create virtual environment
 python -m venv venv
@@ -155,10 +145,10 @@ cp .env.example .env
 
 ```bash
 # Create database
-psql -U postgres -c "CREATE DATABASE kiota_sic_impact;"
+psql -U postgres -c "CREATE DATABASE Org X_sic_impact;"
 
 # Create schema
-psql -U postgres -d kiota_sic_impact -f sql/create_star_schema.sql
+psql -U postgres -d Org X_sic_impact -f sql/create_star_schema.sql
 
 # Load data
 python etl/load_to_database.py
