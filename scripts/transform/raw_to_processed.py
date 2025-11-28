@@ -45,19 +45,19 @@ class BronzeToSilver:
             # Check for data quality issues
             quality_checks = {
                 'missing_counties': """
-                    SELECT COUNT(*) FROM kiota.dim_household 
+                    SELECT COUNT(*) FROM Org X.dim_household 
                     WHERE county IS NULL
                 """,
                 'invalid_ages': """
-                    SELECT COUNT(*) FROM kiota.dim_household 
+                    SELECT COUNT(*) FROM Org X.dim_household 
                     WHERE head_age < 18 OR head_age > 100
                 """,
                 'negative_income': """
-                    SELECT COUNT(*) FROM kiota.dim_household 
+                    SELECT COUNT(*) FROM Org X.dim_household 
                     WHERE monthly_income_ksh < 0
                 """,
                 'household_size_anomalies': """
-                    SELECT COUNT(*) FROM kiota.dim_household 
+                    SELECT COUNT(*) FROM Org X.dim_household 
                     WHERE household_size < 1 OR household_size > 20
                 """
             }
@@ -69,7 +69,7 @@ class BronzeToSilver:
         
         # Create cleaned view 
         create_view_sql = text("""
-        CREATE OR REPLACE VIEW kiota.silver_households AS
+        CREATE OR REPLACE VIEW Org X.silver_households AS
         SELECT 
             *,
             CASE 
@@ -87,7 +87,7 @@ class BronzeToSilver:
                 WHEN head_age < 60 THEN 'Adult'
                 ELSE 'Senior'
             END as age_group
-        FROM kiota.dim_household
+        FROM Org X.dim_household
         WHERE household_size BETWEEN 1 AND 20
           AND head_age BETWEEN 18 AND 100
           AND monthly_income_ksh >= 0;
@@ -105,7 +105,7 @@ class BronzeToSilver:
         
         # Simplified version without control group fuel costs
         adoption_metrics_sql = text("""
-        CREATE OR REPLACE VIEW kiota.silver_adoption_metrics AS
+        CREATE OR REPLACE VIEW Org X.silver_adoption_metrics AS
         WITH treatment_group AS (
             SELECT 
                 g.county,
@@ -115,9 +115,9 @@ class BronzeToSilver:
                 AVG(f.baseline_weekly_fuel_cost_ksh) as avg_baseline_cost,
                 MIN(f.baseline_weekly_fuel_cost_ksh) as min_baseline_cost,
                 MAX(f.baseline_weekly_fuel_cost_ksh) as max_baseline_cost
-            FROM kiota.fact_adoptions f
-            JOIN kiota.dim_household h ON f.household_key = h.household_key
-            JOIN kiota.dim_geography g ON f.geography_key = g.geography_key
+            FROM Org X.fact_adoptions f
+            JOIN Org X.dim_household h ON f.household_key = h.household_key
+            JOIN Org X.dim_geography g ON f.geography_key = g.geography_key
             GROUP BY g.county, h.urban_rural
         ),
         control_counts AS (
@@ -125,7 +125,7 @@ class BronzeToSilver:
                 county,
                 urban_rural,
                 COUNT(*) as control_households
-            FROM kiota.dim_household
+            FROM Org X.dim_household
             WHERE control_group = true
             GROUP BY county, urban_rural
         )
@@ -159,7 +159,7 @@ class BronzeToSilver:
         
         
         impact_sql = text("""
-        CREATE OR REPLACE VIEW kiota.silver_impact_calculations AS
+        CREATE OR REPLACE VIEW Org X.silver_impact_calculations AS
         SELECT 
             f.household_key,
             f.product_key,
@@ -187,9 +187,9 @@ class BronzeToSilver:
                 ELSE 'Minimal Use'
             END as adoption_category
             
-        FROM kiota.fact_adoptions f
-        JOIN kiota.dim_product p ON f.product_key = p.product_key
-        JOIN kiota.dim_geography g ON f.geography_key = g.geography_key;
+        FROM Org X.fact_adoptions f
+        JOIN Org X.dim_product p ON f.product_key = p.product_key
+        JOIN Org X.dim_geography g ON f.geography_key = g.geography_key;
         """)
         
         with self.engine.connect() as conn:
@@ -210,14 +210,14 @@ class BronzeToSilver:
                     COUNT(*) as total_records,
                     COUNT(CASE WHEN county IS NOT NULL THEN 1 END) as complete_county,
                     COUNT(CASE WHEN monthly_income_ksh IS NOT NULL THEN 1 END) as complete_income
-                FROM kiota.dim_household
+                FROM Org X.dim_household
                 UNION ALL
                 SELECT 
                     'Adoptions',
                     COUNT(*),
                     COUNT(CASE WHEN usage_intensity IS NOT NULL THEN 1 END),
                     COUNT(CASE WHEN subsidy_amount IS NOT NULL THEN 1 END)
-                FROM kiota.fact_adoptions
+                FROM Org X.fact_adoptions
             """, conn)
             
             print("\nCompleteness Metrics:")
@@ -228,14 +228,14 @@ class BronzeToSilver:
                 SELECT 
                     'High Usage Intensity' as anomaly_type,
                     COUNT(*) as count
-                FROM kiota.fact_adoptions
+                FROM Org X.fact_adoptions
                 WHERE usage_intensity > 0.95
                 UNION ALL
                 SELECT 
                     'Low Income High Adoption',
                     COUNT(*)
-                FROM kiota.fact_adoptions f
-                JOIN kiota.dim_household h ON f.household_key = h.household_key
+                FROM Org X.fact_adoptions f
+                JOIN Org X.dim_household h ON f.household_key = h.household_key
                 WHERE h.monthly_income_ksh < 10000 AND f.usage_intensity > 0.8
             """, conn)
             
