@@ -1,6 +1,6 @@
 # ETL Pipeline Documentation
 
-This document describes the Extract, Transform, Load (ETL) pipeline for the Kiota SIC Impact Measurement & ROI Analytics System.
+This document describes the Extract, Transform, Load (ETL) pipeline for the Org X SIC Impact Measurement & ROI Analytics System.
 
 ## Pipeline Overview
 ## Layer Transformation Details
@@ -30,7 +30,7 @@ quality_checks = {
 | Age group | `< 30 = Youth, 30-60 = Adult, > 60 = Senior` | Demographics |
 | Data type enforcement | All fields cast to appropriate types | Query performance |
 
-**Output:** `kiota.silver_households` view
+**Output:** `Org X.silver_households` view
 
 #### 2. Adoption Metrics with Counterfactual
 
@@ -62,7 +62,7 @@ control_counts AS (
 | Estimated savings | `baseline_cost × usage_intensity × 0.30` | Impact calculation |
 | Control group comparison | Treatment vs Control aggregations | Additionality proof |
 
-**Output:** `kiota.silver_adoption_metrics` view
+**Output:** `Org X.silver_adoption_metrics` view
 
 #### 3. Impact Calculations
 
@@ -88,7 +88,7 @@ coefficients = {
 | Time savings | `2.5 hours × 365 × usage_intensity` | hours/year |
 | Healthcare savings | `5000 × usage_intensity` | KES/year |
 
-**Output:** `kiota.silver_impact_calculations` view
+**Output:** `Org X.silver_impact_calculations` view
 
 ---
 
@@ -99,7 +99,7 @@ coefficients = {
 #### 1. Executive Summary
 
 ```sql
-CREATE VIEW kiota.gold_executive_summary AS
+CREATE VIEW Org X.gold_executive_summary AS
 SELECT 
     COUNT(DISTINCT household_key) as total_households_reached,
     SUM(co2_avoided_annual) as total_co2_avoided_tons,
@@ -116,7 +116,7 @@ JOIN silver_impact_calculations USING (household_key);
 #### 2. County Performance
 
 ```sql
-CREATE VIEW kiota.gold_county_performance AS
+CREATE VIEW Org X.gold_county_performance AS
 SELECT 
     county,
     poverty_rate,
