@@ -1,6 +1,6 @@
 """
 Stage 1: EXTRACT - Synthetic Household Data Generation
-For Kiota SIC Impact Measurement Project
+For Org X SIC Impact Measurement Project
 Generates 200,000 household records across 14 Kenya counties
 """
 
@@ -32,7 +32,7 @@ COUNTIES = {
     'Turkana': {'urban_pct': 0.15, 'population_weight': 0.13}
 }
 
-# Product types aligned with Kiota's actual products
+# Product types aligned with Org X's actual products
 PRODUCTS = {
     'charcoal_stove': {'base_price': 5, 'efficiency': 0.35, 'emissions_reduction': 0.40},
     'firewood_stove': {'base_price': 5, 'efficiency': 0.30, 'emissions_reduction': 0.35},
@@ -232,14 +232,14 @@ print("Generating 200,000 household records...")
 households_df = generate_households(200000)
 
 # Save to CSV
-households_df.to_csv('/home/claude/kiota_households_200k.csv', index=False)
-print(f"Saved {len(households_df)} records to kiota_households_200k.csv")
+households_df.to_csv('/home/claude/Org X_households_200k.csv', index=False)
+print(f"Saved {len(households_df)} records to Org X_households_200k.csv")
 
 # Generate and save summary statistics
 stats = generate_summary_statistics(households_df)
-with open('/home/claude/kiota_data_summary.json', 'w') as f:
+with open('/home/claude/Org X_data_summary.json', 'w') as f:
     json.dump(stats, f, indent=2, default=str)
-print("\nSummary statistics saved to kiota_data_summary.json")
+print("\nSummary statistics saved to Org X_data_summary.json")
 
 # Display summary
 print("\n=== DATA GENERATION SUMMARY ===")
