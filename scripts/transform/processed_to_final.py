@@ -38,7 +38,7 @@ class SilverToGold:
         
         
         exec_summary_sql = text("""
-        CREATE OR REPLACE VIEW kiota.gold_executive_summary AS
+        CREATE OR REPLACE VIEW Org X.gold_executive_summary AS
         SELECT 
             -- Key Metrics
             COUNT(DISTINCT f.household_key) as total_households_reached,
@@ -59,8 +59,8 @@ class SilverToGold:
             -- Progress to Goal
             COUNT(DISTINCT f.household_key)::float / 975000 * 100 as pct_of_goal_achieved
             
-        FROM kiota.fact_adoptions f
-        JOIN kiota.silver_impact_calculations i 
+        FROM Org X.fact_adoptions f
+        JOIN Org X.silver_impact_calculations i 
             ON f.household_key = i.household_key;
         """)
         
@@ -74,7 +74,7 @@ class SilverToGold:
         
         
         county_sql = text("""
-        CREATE OR REPLACE VIEW kiota.gold_county_performance AS
+        CREATE OR REPLACE VIEW Org X.gold_county_performance AS
         SELECT 
             g.county,
             g.poverty_rate,
@@ -99,10 +99,10 @@ class SilverToGold:
             COUNT(DISTINCT CASE WHEN p.product_type = 'pellet_stove' THEN f.household_key END) as pellet_stoves,
             COUNT(DISTINCT CASE WHEN p.product_type = 'solar_lantern' THEN f.household_key END) as solar_lanterns
             
-        FROM kiota.fact_adoptions f
-        JOIN kiota.dim_geography g ON f.geography_key = g.geography_key
-        JOIN kiota.dim_product p ON f.product_key = p.product_key
-        JOIN kiota.silver_impact_calculations i ON f.household_key = i.household_key
+        FROM Org X.fact_adoptions f
+        JOIN Org X.dim_geography g ON f.geography_key = g.geography_key
+        JOIN Org X.dim_product p ON f.product_key = p.product_key
+        JOIN Org X.silver_impact_calculations i ON f.household_key = i.household_key
         GROUP BY g.county, g.poverty_rate, g.electrification_rate, g.population;
         """)
         
@@ -116,7 +116,7 @@ class SilverToGold:
         
         
         health_donor_sql = text("""
-        CREATE OR REPLACE VIEW kiota.gold_donor_health_impact AS
+        CREATE OR REPLACE VIEW Org X.gold_donor_health_impact AS
         SELECT 
             g.county,
             COUNT(DISTINCT f.household_key) as households,
@@ -125,15 +125,15 @@ class SilverToGold:
             SUM(i.healthcare_savings_annual_ksh) as healthcare_cost_avoided,
             SUM(CASE WHEN h.vulnerability_factors LIKE '%Elderly%' THEN 1 ELSE 0 END) as elderly_reached,
             SUM(CASE WHEN h.children_under_18 > 0 THEN h.children_under_18 ELSE 0 END) as children_impacted
-        FROM kiota.fact_adoptions f
-        JOIN kiota.dim_household h ON f.household_key = h.household_key
-        JOIN kiota.dim_geography g ON f.geography_key = g.geography_key
-        JOIN kiota.silver_impact_calculations i ON f.household_key = i.household_key
+        FROM Org X.fact_adoptions f
+        JOIN Org X.dim_household h ON f.household_key = h.household_key
+        JOIN Org X.dim_geography g ON f.geography_key = g.geography_key
+        JOIN Org X.silver_impact_calculations i ON f.household_key = i.household_key
         GROUP BY g.county;
         """)
         
         env_donor_sql = text("""
-        CREATE OR REPLACE VIEW kiota.gold_donor_environment_impact AS
+        CREATE OR REPLACE VIEW Org X.gold_donor_environment_impact AS
         SELECT 
             g.county,
             COUNT(DISTINCT f.household_key) as households,
@@ -141,25 +141,25 @@ class SilverToGold:
             SUM(i.carbon_credit_value_usd) as carbon_credit_value,
             SUM(i.co2_avoided_annual * 0.17) as trees_equivalent,
             SUM(p.pm25_emissions_mg_m3 * f.usage_intensity) as pm25_reduced
-        FROM kiota.fact_adoptions f
-        JOIN kiota.dim_product p ON f.product_key = p.product_key
-        JOIN kiota.dim_geography g ON f.geography_key = g.geography_key
-        JOIN kiota.silver_impact_calculations i ON f.household_key = i.household_key
+        FROM Org X.fact_adoptions f
+        JOIN Org X.dim_product p ON f.product_key = p.product_key
+        JOIN Org X.dim_geography g ON f.geography_key = g.geography_key
+        JOIN Org X.silver_impact_calculations i ON f.household_key = i.household_key
         GROUP BY g.county;
         """)
         
         gender_donor_sql = text("""
-        CREATE OR REPLACE VIEW kiota.gold_donor_gender_impact AS
+        CREATE OR REPLACE VIEW Org X.gold_donor_gender_impact AS
         SELECT 
             g.county,
             COUNT(DISTINCT CASE WHEN h.head_gender = 'Female' THEN f.household_key END) as female_headed_households,
             SUM(i.time_saved_hours_annual) as total_time_saved_hours,
             SUM(i.time_saved_hours_annual * 0.7) as women_time_saved_hours,
             SUM(CASE WHEN h.vulnerability_factors LIKE '%Single Parent%' THEN 1 ELSE 0 END) as single_parents_reached
-        FROM kiota.fact_adoptions f
-        JOIN kiota.dim_household h ON f.household_key = h.household_key
-        JOIN kiota.dim_geography g ON f.geography_key = g.geography_key
-        JOIN kiota.silver_impact_calculations i ON f.household_key = i.household_key
+        FROM Org X.fact_adoptions f
+        JOIN Org X.dim_household h ON f.household_key = h.household_key
+        JOIN Org X.dim_geography g ON f.geography_key = g.geography_key
+        JOIN Org X.silver_impact_calculations i ON f.household_key = i.household_key
         GROUP BY g.county;
         """)
         
