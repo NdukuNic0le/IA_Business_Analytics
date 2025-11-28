@@ -1,0 +1,53 @@
+data/
+*.csv
+*.xlsx
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Database
+*.db
+*.db-journal
+
+# Data files (too large for Git)
+data/raw/*.csv
+data/processed/*.csv
+data/final/*.csv
+*.parquet
+
+# Keep directory structure but ignore large files
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/final/.gitkeep
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Power BI
+*.pbix.tmp
+*.pbix~
+
+# Documentation builds
+docs/_build/
